@@ -1,0 +1,83 @@
+{% load static wagtailcore_tags wagtailuserbar %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>
+            {% block title %}
+            {% if page.seo_title %}{{ page.seo_title }}{% else %}{{ page.title }}{% endif %}
+            {% endblock %}
+            {% block title_suffix %}
+            {% wagtail_site as current_site %}
+            {% if current_site and current_site.site_name %}- {{ current_site.site_name }}{% endif %}
+            {% endblock %}
+        </title>
+        {% if page.search_description %}
+        <meta name="description" content="{{ page.search_description }}" />
+        {% endif %}
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        {# Force all links in the live preview panel to be opened in a new tab #}
+        {% if request.in_preview_panel %}
+        <base target="_blank">
+        {% endif %}
+
+        {# Tailwind CSS & HTMX #}
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            navy: '#0f172a', /* Deep professional navy */
+                            slate: '#64748b', /* Neutral slate for text */
+                            accent: '#38bdf8', /* Accent blue */
+                        }
+                    }
+                }
+            }
+        </script>
+        <script src="https://unpkg.com/htmx.org@1.9.11" integrity="sha384-0gxUXCCR8yv9iwP343FmldfByd/HtcC0w871zO+h6J10R/MmsO1x4F0vB0hXwYtG" crossorigin="anonymous"></script>
+
+        {# Global stylesheets #}
+        <link rel="stylesheet" type="text/css" href="{% static 'css/siguranta_psihologica.css' %}">
+
+        {% block extra_css %}
+        {# Override this in templates to add extra stylesheets #}
+        {% endblock %}
+    </head>
+
+    <body class="bg-gray-50 text-slate-800 font-sans leading-normal tracking-normal {% block body_class %}{% endblock %}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+        <nav class="bg-navy p-4 text-white">
+            <div class="container mx-auto flex justify-between items-center">
+                <a href="/" class="text-xl font-bold tracking-tight">Siguranta Psihologica</a>
+                <div>
+                    <a href="/" class="px-3 hover:text-accent transition-colors">Acasă</a>
+                    <a href="/despre/" class="px-3 hover:text-accent transition-colors">Despre Noi</a>
+                    <a href="/resurse/" class="px-3 hover:text-accent transition-colors">Resurse</a>
+                </div>
+            </div>
+        </nav>
+
+        {% wagtailuserbar %}
+
+        <main class="container mx-auto my-8 px-4" id="main-content">
+            {% block content %}{% endblock %}
+        </main>
+
+        <footer class="bg-navy text-white mt-12 py-8">
+            <div class="container mx-auto px-4 text-center">
+                <p>&copy; {% now "Y" %} Siguranta Psihologica. Toate drepturile rezervate.</p>
+                <p class="text-sm text-slate-400 mt-2">Promovăm învățarea și performanța prin siguranță psihologică.</p>
+            </div>
+        </footer>
+
+        {# Global javascript #}
+        <script type="text/javascript" src="{% static 'js/siguranta_psihologica.js' %}"></script>
+
+        {% block extra_js %}
+        {# Override this in templates to add extra javascript #}
+        {% endblock %}
+    </body>
+</html>
