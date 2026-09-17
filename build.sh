@@ -1,4 +1,4 @@
 #!/bin/bash
-python3 -m pip install -r requirements.txt --break-system-packages
-python3 manage.py collectstatic --noinput
-python3 manage.py migrate
+python -m pip install -r requirements.txt --break-system-packages
+python manage.py collectstatic --noinput
+python manage.py migrate
