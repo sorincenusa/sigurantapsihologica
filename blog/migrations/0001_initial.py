@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ("wagtailcore", "0098_apitoken"),
+        ("wagtailcore", "0040_page_draft_title"),
     ]
 
     operations = [
